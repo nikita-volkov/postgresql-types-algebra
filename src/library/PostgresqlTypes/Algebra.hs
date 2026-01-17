@@ -12,7 +12,7 @@ import qualified TextBuilder
 import Prelude
 
 -- | Evidence that a type maps to a PostgreSQL value.
-class IsStandardType a where
+class IsScalarType a where
   -- | PostgreSQL type name.
   typeName :: Tagged a Text
 
@@ -62,7 +62,7 @@ class IsStandardType a where
   textualDecoder :: Attoparsec.Parser a
 
 -- | Evidence that a type can be used as an element of a PostgreSQL range type.
-class (IsStandardType a, Ord a) => IsRangeElement a where
+class (IsScalarType a, Ord a) => IsRangeElement a where
   -- | PostgreSQL range type name.
   rangeTypeName :: Tagged a Text
 
