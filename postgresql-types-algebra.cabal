@@ -2,8 +2,17 @@ cabal-version: 3.0
 name: postgresql-types-algebra
 version: 0
 category: PostgreSQL, Codecs
-synopsis:
+synopsis: Type classes for PostgreSQL type mappings
 description:
+  Core type classes and algebra extracted from the postgresql-types library.
+
+  Defines the fundamental abstractions for mapping Haskell types to PostgreSQL types,
+  including binary and textual encoding/decoding, type metadata, and error handling.
+
+  This package provides the type class algebra without concrete type implementations,
+  making it suitable as a lightweight dependency for libraries that want to define
+  their own PostgreSQL type mappings or work with the postgresql-types ecosystem.
+
 homepage: https://github.com/nikita-volkov/postgresql-types-algebra
 bug-reports: https://github.com/nikita-volkov/postgresql-types-algebra/issues
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
