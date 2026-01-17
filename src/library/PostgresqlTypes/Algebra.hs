@@ -101,20 +101,14 @@ data DecodingErrorReason
       -- | Actual.
       Text
   | -- | Unsupported server-side value.
-    UnsupportedValueDecodingErrorReason
-      -- | Details.
-      Text
-      -- | Value.
-      Text
-  | -- | Failure to satisfy a refinement predicate.
     --
     -- Useful for defining decoders on a narrower type than the underlying PostgreSQL type.
     --
     -- This one does not signal a problem with the data itself, but rather that the data does not meet
     -- the additional constraints imposed by the refinement.
-    RefinementDecodingErrorReason
+    UnsupportedValueDecodingErrorReason
       -- | Details.
       Text
-      -- | Decoded base value.
+      -- | Value.
       Text
   deriving stock (Show, Eq)
