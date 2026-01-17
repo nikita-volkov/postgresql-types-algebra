@@ -16,12 +16,12 @@ This package provides the fundamental abstractions for mapping Haskell types to 
 
 ## Type Classes
 
-### `IsScalarType`
+### `IsScalar`
 
 The core type class for types that map to PostgreSQL values:
 
 ```haskell
-class IsScalarType a where
+class IsScalar a where
   -- Type metadata
   typeName :: Tagged a Text
   baseOid :: Tagged a (Maybe Word32)
@@ -49,7 +49,7 @@ This class enables:
 For types that can be elements of PostgreSQL range types:
 
 ```haskell
-class (IsScalarType a, Ord a) => IsRangeElement a where
+class (IsScalar a, Ord a) => IsRangeElement a where
   rangeTypeName :: Tagged a Text
   rangeBaseOid :: Tagged a (Maybe Word32)
   rangeArrayOid :: Tagged a (Maybe Word32)
@@ -95,7 +95,7 @@ These error types provide:
 Use this package to:
 - Define custom PostgreSQL type mappings compatible with the postgresql-types ecosystem
 - Create adapter libraries for different PostgreSQL client libraries
-- Build generic tools that work with any `IsScalarType` instance
+- Build generic tools that work with any `IsScalar` instance
 
 ### For Application Developers
 
