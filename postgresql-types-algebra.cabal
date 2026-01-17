@@ -1,11 +1,11 @@
 cabal-version: 3.0
-name: postgresql-types-core
+name: postgresql-types-algebra
 version: 0
 category: PostgreSQL, Codecs
 synopsis:
 description:
-homepage: https://github.com/nikita-volkov/postgresql-types-core
-bug-reports: https://github.com/nikita-volkov/postgresql-types-core/issues
+homepage: https://github.com/nikita-volkov/postgresql-types-algebra
+bug-reports: https://github.com/nikita-volkov/postgresql-types-algebra/issues
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright: (c) 2025, Nikita Volkov
@@ -17,7 +17,7 @@ extra-doc-files:
 
 source-repository head
   type: git
-  location: https://github.com/nikita-volkov/postgresql-types-core
+  location: https://github.com/nikita-volkov/postgresql-types-algebra
 
 common base
   default-language: Haskell2010
