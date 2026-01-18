@@ -86,7 +86,7 @@ class (IsRangeElement a) => IsMultirangeElement a where
   -- | Statically known OID for the multirange array-type.
   multirangeArrayOid :: Tagged a (Maybe Word32)
 
-class (IsScalar scalar) => ProjectsToScalar scalar subject where
+class (IsScalar scalar) => ProjectsToScalar scalar subject | subject -> scalar where
   projectToScalar :: subject -> Either RefinementError scalar
   ejectFromScalar :: scalar -> Either RefinementError subject
 
