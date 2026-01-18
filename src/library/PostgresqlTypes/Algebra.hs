@@ -86,6 +86,10 @@ class (IsRangeElement a) => IsMultirangeElement a where
   -- | Statically known OID for the multirange array-type.
   multirangeArrayOid :: Tagged a (Maybe Word32)
 
+-- | Evidence that a subject type can be projected to and ejected from a scalar type.
+--
+-- This is useful for defining mappings between richer Haskell types and their closest PostgreSQL scalar counterparts.
+-- It allows to define encoding/decoding logic once for the scalar type and reuse it for the subject type.
 class (IsScalar scalar) => ProjectsToScalar scalar subject | subject -> scalar where
   projectToScalar :: subject -> Either RefinementError scalar
   ejectFromScalar :: scalar -> Either RefinementError subject
