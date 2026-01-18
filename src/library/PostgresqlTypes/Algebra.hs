@@ -83,6 +83,19 @@ class (IsRangeElement a) => IsMultirangeElement a where
   -- | Statically known OID for the multirange array-type.
   multirangeArrayOid :: Tagged a (Maybe Word32)
 
+class (IsScalar scalar) => ProjectsToScalar scalar subject where
+  projectToScalar :: subject -> Either RefinementError scalar
+  ejectFromScalar :: scalar -> Either RefinementError subject
+
+-- | Automatically provides instances via the identity projection for all scalar types.
+--
+-- Thus it serves as the preferred more general interface for adapters.
+-- It however requires support for richer semantics than the ones provided by 'IsScalar' alone from the adapters.
+-- It adds encoding errors, which are inevitable for mappings to many practical types as they are often wider than their closest Postgres counterparts.
+instance (IsScalar scalar) => ProjectsToScalar scalar scalar where
+  projectToScalar = Right
+  ejectFromScalar = Right
+
 data DecodingError = DecodingError
   { location :: [Text],
     reason :: DecodingErrorReason
@@ -106,9 +119,12 @@ data DecodingErrorReason
     --
     -- This one does not signal a problem with the data itself, but rather that the data does not meet
     -- the additional constraints imposed by the refinement.
-    UnsupportedValueDecodingErrorReason
-      -- | Details.
-      Text
-      -- | Value.
-      Text
+    RefinementDecodingErrorReason RefinementError
+  deriving stock (Show, Eq)
+
+data RefinementError = RefinementError
+  { location :: [Text],
+    reason :: Text,
+    subject :: Text
+  }
   deriving stock (Show, Eq)
