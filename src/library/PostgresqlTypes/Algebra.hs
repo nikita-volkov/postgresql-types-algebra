@@ -11,8 +11,11 @@ import TextBuilder (TextBuilder)
 import qualified TextBuilder
 import Prelude
 
--- | Evidence that a type maps to a PostgreSQL value.
+-- | Evidence that a type maps to a PostgreSQL scalar value.
 class IsScalar a where
+  -- | PostgreSQL schema name, if applicable.
+  schemaName :: Tagged a (Maybe Text)
+
   -- | PostgreSQL type name.
   typeName :: Tagged a Text
 
