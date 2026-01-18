@@ -86,22 +86,20 @@ class (IsRangeElement a) => IsMultirangeElement a where
   -- | Statically known OID for the multirange array-type.
   multirangeArrayOid :: Tagged a (Maybe Word32)
 
--- | Evidence that a subject type can be projected to and ejected from a scalar type.
+-- | Evidence that a type can be projected to a scalar type for encoding purposes and extracted from it for decoding.
 --
 -- This is useful for defining mappings between richer Haskell types and their closest PostgreSQL scalar counterparts.
 -- It allows to define encoding/decoding logic once for the scalar type and reuse it for the subject type.
-class (IsScalar scalar) => ProjectsToScalar scalar subject | subject -> scalar where
-  projectToScalar :: subject -> Either RefinementError scalar
-  ejectFromScalar :: scalar -> Either RefinementError subject
+class (IsScalar (RepresentedScalar a)) => RepresentsScalar a where
+  type RepresentedScalar a
+  fromScalar :: RepresentedScalar a -> Either RefinementError a
+  toScalar :: a -> Either RefinementError (RepresentedScalar a)
 
--- | Automatically provides instances via the identity projection for all scalar types.
---
--- Thus it serves as the preferred more general interface for adapters.
--- It however requires support for richer semantics than the ones provided by 'IsScalar' alone from the adapters.
--- It adds encoding errors, which are inevitable for mappings to many practical types as they are often wider than their closest Postgres counterparts.
-instance (IsScalar scalar) => ProjectsToScalar scalar scalar where
-  projectToScalar = Right
-  ejectFromScalar = Right
+  default fromScalar :: (RepresentedScalar a ~ a) => RepresentedScalar a -> Either RefinementError a
+  fromScalar = Right
+
+  default toScalar :: (RepresentedScalar a ~ a) => a -> Either RefinementError (RepresentedScalar a)
+  toScalar = Right
 
 data DecodingError = DecodingError
   { location :: [Text],
