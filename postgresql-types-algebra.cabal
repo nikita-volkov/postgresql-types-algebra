@@ -57,11 +57,9 @@ common base
     MultiParamTypeClasses
     MultiWayIf
     NamedFieldPuns
-    NoFieldSelectors
     NoImplicitPrelude
     NoMonomorphismRestriction
     NumericUnderscores
-    OverloadedRecordDot
     OverloadedStrings
     ParallelListComp
     PatternGuards
