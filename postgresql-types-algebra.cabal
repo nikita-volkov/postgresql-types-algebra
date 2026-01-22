@@ -1,6 +1,6 @@
 cabal-version: 3.0
 name: postgresql-types-algebra
-version: 0
+version: 0.0.1
 category: PostgreSQL, Codecs
 synopsis: Type classes for PostgreSQL type mappings
 description:
