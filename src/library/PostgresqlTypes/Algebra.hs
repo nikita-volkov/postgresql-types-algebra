@@ -93,13 +93,17 @@ class (IsRangeElement a) => IsMultirangeElement a where
 class (IsScalar (RepresentedScalar a)) => RepresentsScalar a where
   type RepresentedScalar a
   fromScalar :: RepresentedScalar a -> Either RefinementError a
-  toScalar :: a -> Either RefinementError (RepresentedScalar a)
+  refineToScalar :: a -> Either RefinementError (RepresentedScalar a)
+  normalizeToScalar :: a -> RepresentedScalar a
 
   default fromScalar :: (RepresentedScalar a ~ a) => RepresentedScalar a -> Either RefinementError a
   fromScalar = Right
 
-  default toScalar :: (RepresentedScalar a ~ a) => a -> Either RefinementError (RepresentedScalar a)
-  toScalar = Right
+  default refineToScalar :: (RepresentedScalar a ~ a) => a -> Either RefinementError (RepresentedScalar a)
+  refineToScalar = Right
+
+  default normalizeToScalar :: (RepresentedScalar a ~ a) => a -> RepresentedScalar a
+  normalizeToScalar = id
 
 data DecodingError = DecodingError
   { location :: [Text],
