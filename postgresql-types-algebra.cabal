@@ -102,7 +102,7 @@ library
     attoparsec >=0.14 && <0.19,
     base >=4.11 && <5,
     bytestring >=0.10 && <0.13,
-    ptr-peeker ^>=0.1,
+    ptr-peeker ^>=0.2,
     ptr-poker ^>=0.1.2.16,
     tagged ^>=0.8.9,
     text >=1.2 && <3,
