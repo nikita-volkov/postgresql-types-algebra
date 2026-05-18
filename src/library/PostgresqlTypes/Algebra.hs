@@ -34,7 +34,12 @@ class IsScalar a where
   -- | Get the PostgreSQL type signature for a given Haskell type.
   --
   -- In case of parameterized types, the type parameters are included in the signature.
-  -- For example, for @'PostgresqlTypes.Types.Bpchar.Bpchar' 10@, the signature will be @bpchar(10)@.
+  --
+  -- Examples:
+  --
+  -- - @int8@
+  -- - @bpchar(10)@
+  -- - @"char"@
   typeSignature :: Tagged a Text
   typeSignature =
     let params = untag (typeParams @a)
