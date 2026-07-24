@@ -11,8 +11,8 @@ import TextBuilder (TextBuilder)
 import qualified TextBuilder
 import Prelude
 
--- | Evidence that a type maps to a PostgreSQL scalar value.
-class IsScalar a where
+-- | Evidence that a type maps to a PostgreSQL primitive type.
+class IsPrimitive a where
   -- | PostgreSQL schema name, if applicable.
   schemaName :: Tagged a (Maybe Text)
 
@@ -57,20 +57,26 @@ class IsScalar a where
                     ]
                 )
 
-  -- | Encode the value in PostgreSQL binary format.
-  binaryEncoder :: a -> Write.Write
-
-  -- | Decode the value from PostgreSQL binary format.
-  binaryDecoder :: PtrPeeker.Variable (Either DecodingError a)
-
   -- | Represent the value in PostgreSQL textual format.
   textualEncoder :: a -> TextBuilder.TextBuilder
 
   -- | Decode the value from PostgreSQL textual format.
   textualDecoder :: Attoparsec.Parser a
 
+-- | Evidence that a type has a PostgreSQL binary wire format.
+--
+-- Not every PostgreSQL type supports binary transmission — some only have
+-- textual @send@\/@receive@ functions registered on the server. The absence
+-- of an instance of this class signals that the type is textual-only.
+class (IsPrimitive a) => IsBinaryPrimitive a where
+  -- | Encode the value in PostgreSQL binary format.
+  binaryEncoder :: a -> Write.Write
+
+  -- | Decode the value from PostgreSQL binary format.
+  binaryDecoder :: PtrPeeker.Variable (Either DecodingError a)
+
 -- | Evidence that a type can be used as an element of a PostgreSQL range type.
-class (IsScalar a, Ord a) => IsRangeElement a where
+class (IsPrimitive a, Ord a) => IsRangeElement a where
   -- | PostgreSQL range type name.
   rangeTypeName :: Tagged a Text
 

@@ -16,31 +16,39 @@ This package provides the fundamental abstractions for mapping Haskell types to 
 
 ## Type Classes
 
-### `IsScalar`
+### `IsPrimitive`
 
 The core type class for types that map to PostgreSQL values:
 
 ```haskell
-class IsScalar a where
+class IsPrimitive a where
   -- Type metadata
   typeName :: Tagged a Text
   baseOid :: Tagged a (Maybe Word32)
   arrayOid :: Tagged a (Maybe Word32)
   typeParams :: Tagged a [Text]
   typeSignature :: Tagged a Text
-  
-  -- Binary format
-  binaryEncoder :: a -> Write.Write
-  binaryDecoder :: PtrPeeker.Variable (Either DecodingError a)
-  
+
   -- Textual format
   textualEncoder :: a -> TextBuilder.TextBuilder
   textualDecoder :: Attoparsec.Parser a
 ```
 
-This class enables:
-- **Binary encoding/decoding** using PostgreSQL's native binary format
-- **Textual encoding/decoding** using PostgreSQL's text representation  
+### `IsBinaryPrimitive`
+
+Evidence that a type additionally has a PostgreSQL binary wire format. Not every PostgreSQL type
+supports binary transmission — some only have textual `send`/`receive` functions registered on the
+server — so this is a separate, optional subclass rather than part of `IsPrimitive` itself:
+
+```haskell
+class (IsPrimitive a) => IsBinaryPrimitive a where
+  binaryEncoder :: a -> Write.Write
+  binaryDecoder :: PtrPeeker.Variable (Either DecodingError a)
+```
+
+These classes enable:
+- **Binary encoding/decoding** using PostgreSQL's native binary format, where supported
+- **Textual encoding/decoding** using PostgreSQL's text representation
 - **Type metadata** including OIDs and type signatures for parameterized types
 - **Round-trip fidelity** through all encoding combinations
 
@@ -51,7 +59,7 @@ This class enables:
 Use this package to:
 - Define custom PostgreSQL type mappings compatible with the "postgresql-types" ecosystem
 - Create adapter libraries for different PostgreSQL client libraries
-- Build generic tools that work with any `IsScalar` instance
+- Build generic tools that work with any `IsPrimitive` (and, where applicable, `IsBinaryPrimitive`) instance
 
 ### For Application Developers
 
