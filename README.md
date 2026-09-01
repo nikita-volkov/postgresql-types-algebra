@@ -37,8 +37,8 @@ class IsPrimitive a where
 ### `IsBinaryPrimitive`
 
 Evidence that a type additionally has a PostgreSQL binary wire format. Not every PostgreSQL type
-supports binary transmission — some only have textual `send`/`receive` functions registered on the
-server — so this is a separate, optional subclass rather than part of `IsPrimitive` itself:
+supports binary transmission - some only have textual `send`/`receive` functions registered on the
+server - so this is a separate, optional subclass rather than part of `IsPrimitive` itself:
 
 ```haskell
 class (IsPrimitive a) => IsBinaryPrimitive a where

@@ -65,7 +65,7 @@ class IsPrimitive a where
 
 -- | Evidence that a type has a PostgreSQL binary wire format.
 --
--- Not every PostgreSQL type supports binary transmission — some only have
+-- Not every PostgreSQL type supports binary transmission - some only have
 -- textual @send@\/@receive@ functions registered on the server. The absence
 -- of an instance of this class signals that the type is textual-only.
 class (IsPrimitive a) => IsBinaryPrimitive a where
