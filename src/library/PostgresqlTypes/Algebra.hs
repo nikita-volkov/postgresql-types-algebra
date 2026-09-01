@@ -5,11 +5,11 @@ import Data.ByteString (ByteString)
 import Data.Tagged (Tagged (..), untag)
 import Data.Text (Text)
 import Data.Word (Word32)
+import Prelude
 import qualified PtrPeeker
 import qualified PtrPoker.Write as Write
 import TextBuilder (TextBuilder)
 import qualified TextBuilder
-import Prelude
 
 -- | Evidence that a type maps to a PostgreSQL primitive type.
 class IsPrimitive a where
